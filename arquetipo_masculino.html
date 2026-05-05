@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qual é o Seu Arquétipo Masculino?</title>
+<link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Cinzel:wght@400;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --parchment: #f4e8c1;
+    --parchment-dark: #e8d5a0;
+    --ink: #2c1a0e;
+    --rust: #8b3a1a;
+    --gold: #c8962a;
+    --forest: #3a5c2a;
+    --slate: #4a5568;
+    --deep-blue: #1a2a4a;
+    --teal: #1a5c5a;
+    --purple: #4a1a6a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: #1a0f08;
+    background-image: 
+      radial-gradient(ellipse at 20% 20%, rgba(139,58,26,0.15) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 80%, rgba(26,42,74,0.2) 0%, transparent 50%);
+    min-height: 100vh;
+    font-family: 'Crimson Text', serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .scroll-wrapper {
+    position: relative;
+    max-width: 700px;
+    width: 100%;
+  }
+
+  .scroll-top, .scroll-bottom {
+    width: 100%;
+    height: 40px;
+    background: linear-gradient(135deg, #8b5e2a, #c8962a, #8b5e2a);
+    border-radius: 4px;
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+  }
+  .scroll-top::before, .scroll-top::after,
+  .scroll-bottom::before, .scroll-bottom::after {
+    content: '';
+    position: absolute;
+    width: 50px;
+    height: 60px;
+    background: linear-gradient(135deg, #6b3e1a, #a07030, #6b3e1a);
+    border-radius: 50%;
+    top: 50%;
+    transform: translateY(-50%);
+    box-shadow: inset 0 2px 8px rgba(0,0,0,0.4), 0 4px 12px rgba(0,0,0,0.4);
+  }
+  .scroll-top::before, .scroll-bottom::before { left: -20px; }
+  .scroll-top::after, .scroll-bottom::after { right: -20px; }
+
+  .scroll-body {
+    background: var(--parchment);
+    background-image: 
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect width='4' height='4' fill='%23f4e8c1'/%3E%3Ccircle cx='1' cy='1' r='0.4' fill='%23e0cfa0' opacity='0.5'/%3E%3C/svg%3E");
+    padding: 40px 50px;
+    border-left: 4px solid #c8962a;
+    border-right: 4px solid #c8962a;
+    position: relative;
+    min-height: 400px;
+  }
+
+  .ornament {
+    text-align: center;
+    color: var(--gold);
+    font-size: 24px;
+    letter-spacing: 8px;
+    margin: 8px 0;
+  }
+
+  h1 {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(20px, 5vw, 32px);
+    color: var(--ink);
+    text-align: center;
+    line-height: 1.2;
+    font-weight: 900;
+    text-shadow: 1px 1px 0 rgba(200,150,42,0.3);
+    margin: 12px 0;
+    letter-spacing: 1px;
+  }
+
+  h1 span {
+    color: var(--rust);
+  }
+
+  .subtitle {
+    text-align: center;
+    color: var(--slate);
+    font-size: 16px;
+    font-style: italic;
+    margin-bottom: 30px;
+  }
+
+  /* Progress bar */
+  .progress-container {
+    margin-bottom: 24px;
+  }
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    color: var(--rust);
+    margin-bottom: 6px;
+  }
+  .progress-track {
+    height: 8px;
+    background: var(--parchment-dark);
+    border: 1px solid var(--gold);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--rust), var(--gold));
+    border-radius: 4px;
+    transition: width 0.5s ease;
+  }
+
+  /* Question */
+  .question-block {
+    animation: fadeSlide 0.4s ease;
+  }
+  @keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .question-number {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 8px;
+  }
+
+  .question-text {
+    font-size: clamp(16px, 3vw, 20px);
+    color: var(--ink);
+    font-weight: 600;
+    line-height: 1.5;
+    margin-bottom: 22px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--parchment-dark);
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .option-btn {
+    background: transparent;
+    border: 1.5px solid var(--parchment-dark);
+    border-radius: 4px;
+    padding: 12px 16px;
+    text-align: left;
+    cursor: pointer;
+    font-family: 'Crimson Text', serif;
+    font-size: 16px;
+    color: var(--ink);
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+  .option-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--rust), var(--gold));
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .option-btn:hover {
+    border-color: var(--gold);
+    transform: translateX(4px);
+    box-shadow: -3px 0 0 var(--gold);
+  }
+  .option-btn:hover::before { opacity: 0.06; }
+  .option-btn.selected {
+    border-color: var(--rust);
+    background: rgba(139,58,26,0.08);
+    box-shadow: -4px 0 0 var(--rust);
+  }
+
+  .option-letter {
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--gold);
+    min-width: 20px;
+    position: relative;
+    z-index: 1;
+  }
+  .option-text { position: relative; z-index: 1; line-height: 1.4; }
+
+  .nav-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 28px;
+    gap: 12px;
+  }
+
+  .btn {
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    letter-spacing: 1px;
+    padding: 10px 24px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+  }
+  .btn-back {
+    background: transparent;
+    color: var(--slate);
+    border: 1px solid var(--parchment-dark);
+  }
+  .btn-back:hover { border-color: var(--slate); color: var(--ink); }
+  .btn-next {
+    background: linear-gradient(135deg, var(--rust), #a04020);
+    color: var(--parchment);
+    box-shadow: 0 3px 12px rgba(139,58,26,0.4);
+  }
+  .btn-next:hover { transform: translateY(-1px); box-shadow: 0 5px 18px rgba(139,58,26,0.5); }
+  .btn-next:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+  /* Result */
+  .result-block {
+    animation: fadeSlide 0.5s ease;
+    text-align: center;
+  }
+
+  .result-icon {
+    font-size: 64px;
+    margin: 10px 0;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+  }
+
+  .result-rarity {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    padding: 4px 14px;
+    border-radius: 20px;
+    display: inline-block;
+    margin-bottom: 8px;
+  }
+
+  .result-name {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(26px, 6vw, 38px);
+    font-weight: 900;
+    margin: 8px 0 4px;
+    line-height: 1.1;
+  }
+
+  .result-keyword {
+    font-size: 14px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    opacity: 0.7;
+  }
+
+  .result-divider {
+    width: 80px;
+    height: 2px;
+    margin: 16px auto;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+
+  .result-desc {
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--ink);
+    margin-bottom: 20px;
+    text-align: left;
+  }
+
+  .result-traits {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 24px;
+  }
+  .trait-tag {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    letter-spacing: 1px;
+  }
+
+  .result-percentage {
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    color: var(--rust);
+    font-style: italic;
+    margin-bottom: 20px;
+  }
+
+  .btn-restart {
+    background: linear-gradient(135deg, var(--deep-blue), #2a3a6a);
+    color: var(--parchment);
+    box-shadow: 0 3px 12px rgba(26,42,74,0.4);
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    letter-spacing: 1px;
+    padding: 12px 28px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    margin-top: 8px;
+  }
+  .btn-restart:hover { transform: translateY(-1px); box-shadow: 0 5px 18px rgba(26,42,74,0.5); }
+
+  .start-block {
+    text-align: center;
+    animation: fadeSlide 0.5s ease;
+  }
+  .start-block p {
+    font-size: 17px;
+    color: var(--slate);
+    line-height: 1.7;
+    margin-bottom: 28px;
+  }
+  .btn-start {
+    background: linear-gradient(135deg, var(--rust), #a04020);
+    color: var(--parchment);
+    box-shadow: 0 4px 16px rgba(139,58,26,0.5);
+    font-family: 'Cinzel', serif;
+    font-size: 15px;
+    letter-spacing: 2px;
+    padding: 14px 36px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+  }
+  .btn-start:hover { transform: translateY(-2px); box-shadow: 0 6px 22px rgba(139,58,26,0.6); }
+
+  .watermark {
+    text-align: center;
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    color: rgba(139,58,26,0.4);
+    letter-spacing: 3px;
+    margin-top: 20px;
+  }
+</style>
+</head>
+<body>
+<div class="scroll-wrapper">
+  <div class="scroll-top"></div>
+  <div class="scroll-body" id="app"></div>
+  <div class="scroll-bottom"></div>
+</div>
+
+<script>
+const archetypes = [
+  {
+    id: 'cuidador',
+    name: 'O Cuidador',
+    keyword: 'Cuidado',
+    icon: '🤲',
+    percentage: '42%',
+    rarity: 'O Mais Comum',
+    rarityColor: '#8b3a1a',
+    rarityBg: 'rgba(139,58,26,0.12)',
+    color: '#8b3a1a',
+    desc: 'Você é aquele que coloca os outros em primeiro lugar. Seu maior dom é a empatia profunda e a capacidade de nutrir as pessoas ao seu redor. Você encontra significado no serviço e na proteção daqueles que ama. Sua presença é um porto seguro em meio às tempestades da vida.',
+    traits: ['Empático', 'Protetor', 'Generoso', 'Paciente', 'Dedicado']
+  },
+  {
+    id: 'bobo',
+    name: 'O Bobo',
+    keyword: 'Alegria',
+    icon: '🃏',
+    percentage: '~15%',
+    rarity: 'Incomum',
+    rarityColor: '#3a5c2a',
+    rarityBg: 'rgba(58,92,42,0.12)',
+    color: '#3a5c2a',
+    desc: 'Você carrega a leveza que o mundo precisa. Com humor e espontaneidade, você dissolve tensões e revela verdades que outros não ousam dizer. Seu riso é medicina, e sua sabedoria se esconde por trás do sorriso. Você vive plenamente o momento presente.',
+    traits: ['Espontâneo', 'Criativo', 'Sagaz', 'Leve', 'Verdadeiro']
+  },
+  {
+    id: 'amante',
+    name: 'O Amante',
+    keyword: 'Paixão',
+    icon: '❤️',
+    percentage: '14%',
+    rarity: 'Incomum',
+    rarityColor: '#8b3a1a',
+    rarityBg: 'rgba(139,58,26,0.12)',
+    color: '#8b3a1a',
+    desc: 'Você vive com intensidade e conexão profunda. Sua sensibilidade aguçada permite que você se relacione com o mundo de forma apaixonada — seja nas relações, na arte ou nos ideais. Para você, viver pela metade nunca é suficiente. Tudo merece sua entrega total.',
+    traits: ['Intenso', 'Sensível', 'Conectado', 'Apaixonado', 'Artístico']
+  },
+  {
+    id: 'guerreiro',
+    name: 'O Guerreiro',
+    keyword: 'Coragem',
+    icon: '⚔️',
+    percentage: '9%',
+    rarity: 'Raro',
+    rarityColor: '#6b3e1a',
+    rarityBg: 'rgba(107,62,26,0.12)',
+    color: '#6b3e1a',
+    desc: 'Você enfrenta os desafios de frente com disciplina e determinação. Seu caráter é forjado nas adversidades que outros evitam. Você sabe que o crescimento verdadeiro vem do confronto corajoso com os próprios limites. A sua força interior inspira todos ao redor.',
+    traits: ['Corajoso', 'Disciplinado', 'Determinado', 'Resistente', 'Focado']
+  },
+  {
+    id: 'pai',
+    name: 'O Pai',
+    keyword: 'Proteção',
+    icon: '🛡️',
+    percentage: '~6%',
+    rarity: 'Raro',
+    rarityColor: '#1a5c5a',
+    rarityBg: 'rgba(26,92,90,0.12)',
+    color: '#1a5c5a',
+    desc: 'Você é o pilar. Sua energia é de autoridade amorosa — aquele que guia sem dominar, que protege sem sufocar. Você assume responsabilidade de forma natural e encontra significado em garantir que os outros tenham o que precisam para florescer.',
+    traits: ['Responsável', 'Estável', 'Guia', 'Firme', 'Sábio']
+  },
+  {
+    id: 'mago',
+    name: 'O Mago',
+    keyword: 'Transformação',
+    icon: '🔮',
+    percentage: '4%',
+    rarity: 'Muito Raro',
+    rarityColor: '#4a1a6a',
+    rarityBg: 'rgba(74,26,106,0.12)',
+    color: '#4a1a6a',
+    desc: 'Você possui a habilidade de ver além do óbvio e catalisar mudanças profundas. Com visão estratégica e sabedoria interior, você transforma situações, pessoas e a si mesmo. Sua presença tem um poder sutil que altera o campo ao redor. Você é o elo entre o visível e o invisível.',
+    traits: ['Visionário', 'Estratégico', 'Catalítico', 'Intuitivo', 'Transformador']
+  },
+  {
+    id: 'explorador',
+    name: 'O Explorador',
+    keyword: 'Liberdade',
+    icon: '🧭',
+    percentage: '3%',
+    rarity: 'Muito Raro',
+    rarityColor: '#1a5c5a',
+    rarityBg: 'rgba(26,92,90,0.12)',
+    color: '#1a5c5a',
+    desc: 'Você é movido pela busca incessante por novidade, aventura e autoconhecimento. Fronteiras existem para ser cruzadas. Você inspira com sua autenticidade e recusa-se a se conformar com o que a sociedade espera. Sua jornada é uma obra de arte única e irrepetível.',
+    traits: ['Aventureiro', 'Autêntico', 'Curioso', 'Independente', 'Livre']
+  },
+  {
+    id: 'criador',
+    name: 'O Criador',
+    keyword: 'Inovação',
+    icon: '🎨',
+    percentage: '~2%',
+    rarity: 'Raro Excepcional',
+    rarityColor: '#c8962a',
+    rarityBg: 'rgba(200,150,42,0.12)',
+    color: '#c8962a',
+    desc: 'Você traz ao mundo aquilo que antes não existia. Com imaginação fértil e impulso criativo, você molda ideias em realidade. Não importa o meio — seu espírito inventivo está sempre construindo algo novo, algo que carrega a sua marca única.',
+    traits: ['Inventivo', 'Visionário', 'Original', 'Expressivo', 'Construtor']
+  },
+  {
+    id: 'sabio',
+    name: 'O Sábio',
+    keyword: 'Sabedoria',
+    icon: '📜',
+    percentage: '1%',
+    rarity: 'Extremamente Raro',
+    rarityColor: '#2c5c2a',
+    rarityBg: 'rgba(44,92,42,0.12)',
+    color: '#2c5c2a',
+    desc: 'Você possui uma sede insaciável de verdade e compreensão. Sua mente analítica e contemplativa percebe padrões onde outros veem caos. Você acumula sabedoria não para si, mas para iluminar o caminho dos outros. A sua presença convida ao pensamento profundo.',
+    traits: ['Analítico', 'Contemplativo', 'Claro', 'Objetivo', 'Iluminador']
+  },
+  {
+    id: 'heroi',
+    name: 'O Herói',
+    keyword: 'Triunfo',
+    icon: '🏆',
+    percentage: '0.8%',
+    rarity: 'Lendário',
+    rarityColor: '#1a2a4a',
+    rarityBg: 'rgba(26,42,74,0.12)',
+    color: '#1a2a4a',
+    desc: 'Você é movido por um propósito maior que si mesmo. Com coragem inabalável e determinação heroica, você enfrenta os dragões — internos e externos — que outros recusam confrontar. Sua jornada inspira gerações e deixa um legado de transformação real.',
+    traits: ['Propósito', 'Inabalável', 'Inspirador', 'Corajoso', 'Legado']
+  },
+  {
+    id: 'rebelde',
+    name: 'O Rebelde',
+    keyword: 'Ruptura',
+    icon: '🔥',
+    percentage: '0.4%',
+    rarity: 'Mítico',
+    rarityColor: '#8b1a1a',
+    rarityBg: 'rgba(139,26,26,0.12)',
+    color: '#8b1a1a',
+    desc: 'Você questiona tudo aquilo que está estabelecido. Com uma energia disruptiva e radical, você derruba sistemas antiquados e abre espaço para o novo. Você é perigoso para o status quo — e é exatamente isso que o mundo precisa em determinados momentos da história.',
+    traits: ['Disruptivo', 'Radical', 'Desafiador', 'Intenso', 'Revolucionário']
+  },
+  {
+    id: 'rei',
+    name: 'O Rei',
+    keyword: 'Ordem',
+    icon: '👑',
+    percentage: '0.3%',
+    rarity: 'Ultíssimo Raro',
+    rarityColor: '#c8962a',
+    rarityBg: 'rgba(200,150,42,0.15)',
+    color: '#8b5e0a',
+    desc: 'Você carrega a raridade mais alta dentre todos os arquétipos. Com sabedoria soberana, você governa — a si mesmo primeiro, e depois ao que está ao seu redor. Você une opostos, inspira lealdade e cria ordem a partir do caos. Onde você está, a excelência floresce.',
+    traits: ['Soberano', 'Integrador', 'Justo', 'Magnânimo', 'Visionário']
+  }
+];
+
+const questions = [
+  {
+    text: 'Diante de um conflito, qual é sua primeira reação?',
+    options: [
+      { text: 'Tento mediar e cuidar de todos os envolvidos', scores: {cuidador:3, pai:1, sabio:1} },
+      { text: 'Encaro diretamente e busco resolver com força e clareza', scores: {guerreiro:3, heroi:2, rei:1} },
+      { text: 'Analiso profundamente antes de agir', scores: {sabio:3, mago:2, explorador:1} },
+      { text: 'Questiono se o conflito sequer deveria existir', scores: {rebelde:3, explorador:1, bobo:1} }
+    ]
+  },
+  {
+    text: 'Como você encontra mais significado na vida?',
+    options: [
+      { text: 'Servindo e cuidando das pessoas que amo', scores: {cuidador:3, pai:2} },
+      { text: 'Criando algo novo e deixando minha marca', scores: {criador:3, mago:1, amante:1} },
+      { text: 'Explorando novos horizontes e descobrindo a mim mesmo', scores: {explorador:3, bobo:1, heroi:1} },
+      { text: 'Conquistando objetivos e superando desafios', scores: {heroi:3, guerreiro:2, rei:1} }
+    ]
+  },
+  {
+    text: 'Qual destas palavras mais ressoa com você?',
+    options: [
+      { text: 'Conexão', scores: {amante:3, cuidador:2} },
+      { text: 'Sabedoria', scores: {sabio:3, mago:2, rei:1} },
+      { text: 'Aventura', scores: {explorador:3, guerreiro:1, heroi:1} },
+      { text: 'Poder', scores: {rei:3, heroi:1, rebelde:1} }
+    ]
+  },
+  {
+    text: 'Em um grupo, qual papel você naturalmente assume?',
+    options: [
+      { text: 'O que apoia e cuida do bem-estar de todos', scores: {cuidador:3, pai:2} },
+      { text: 'O que faz todos rirem e alivia tensões', scores: {bobo:3, amante:1} },
+      { text: 'O que lidera com visão e estratégia', scores: {rei:3, heroi:2, mago:1} },
+      { text: 'O que questiona e propõe soluções inovadoras', scores: {rebelde:2, criador:2, explorador:2} }
+    ]
+  },
+  {
+    text: 'O que você mais valoriza em si mesmo?',
+    options: [
+      { text: 'Minha sensibilidade e profundidade emocional', scores: {amante:3, cuidador:1, sabio:1} },
+      { text: 'Minha disciplina e força de vontade', scores: {guerreiro:3, heroi:2} },
+      { text: 'Minha inteligência e capacidade de análise', scores: {sabio:3, mago:2} },
+      { text: 'Minha originalidade e criatividade', scores: {criador:3, explorador:1, bobo:1} }
+    ]
+  },
+  {
+    text: 'Como você reage quando as regras parecem injustas?',
+    options: [
+      { text: 'Aceito e tento trabalhar dentro do sistema', scores: {cuidador:2, pai:2} },
+      { text: 'Questiono e busco mudar as regras', scores: {rebelde:3, heroi:2, explorador:1} },
+      { text: 'Analiso se realmente são injustas antes de julgar', scores: {sabio:3, rei:1} },
+      { text: 'Uso minha criatividade para encontrar uma saída', scores: {mago:2, criador:2, bobo:2} }
+    ]
+  },
+  {
+    text: 'Qual dessas jornadas você escolheria?',
+    options: [
+      { text: 'Cuidar de uma comunidade em dificuldade', scores: {cuidador:3, pai:2} },
+      { text: 'Descobrir lugares desconhecidos e culturas novas', scores: {explorador:3, heroi:1} },
+      { text: 'Derrotar uma ameaça que ninguém mais se atreve a enfrentar', scores: {heroi:3, guerreiro:2, rei:1} },
+      { text: 'Criar uma obra que transforme a visão das pessoas', scores: {criador:3, mago:2, amante:1} }
+    ]
+  },
+  {
+    text: 'O que as pessoas buscam em você?',
+    options: [
+      { text: 'Acolhimento e suporte emocional', scores: {cuidador:3, amante:1} },
+      { text: 'Conselho sábio e orientação', scores: {sabio:3, pai:2, rei:1} },
+      { text: 'Energia e inspiração para agir', scores: {heroi:2, guerreiro:2, bobo:1} },
+      { text: 'Novas perspectivas e visões transformadoras', scores: {mago:3, criador:2, explorador:1} }
+    ]
+  },
+  {
+    text: 'Qual das frases define melhor seu código de vida?',
+    options: [
+      { text: '"Amar é o ato mais corajoso que existe"', scores: {amante:3, cuidador:2} },
+      { text: '"O conhecimento é o único caminho para a liberdade"', scores: {sabio:3, explorador:1} },
+      { text: '"Nasci para quebrar o que precisa ser quebrado"', scores: {rebelde:3, guerreiro:1} },
+      { text: '"Minha maior vitória ainda está por vir"', scores: {heroi:3, rei:2, guerreiro:1} }
+    ]
+  },
+  {
+    text: 'Como você lida com momentos de solidão?',
+    options: [
+      { text: 'Busco me aproximar de outras pessoas logo', scores: {cuidador:2, amante:2} },
+      { text: 'Uso o tempo para refletir e crescer internamente', scores: {sabio:3, mago:2, explorador:1} },
+      { text: 'Me jogo em uma nova aventura ou projeto', scores: {explorador:3, criador:2} },
+      { text: 'Encaro como um teste que preciso superar', scores: {guerreiro:3, heroi:2, rei:1} }
+    ]
+  }
+];
+
+let current = 0;
+let answers = [];
+let phase = 'start';
+
+function getScores() {
+  const totals = {};
+  archetypes.forEach(a => totals[a.id] = 0);
+  answers.forEach(answer => {
+    const opts = questions[answer.q].options[answer.opt].scores;
+    Object.entries(opts).forEach(([id, val]) => { totals[id] = (totals[id] || 0) + val; });
+  });
+  return totals;
+}
+
+function getResult() {
+  const scores = getScores();
+  let best = archetypes[0];
+  let max = 0;
+  archetypes.forEach(a => {
+    if ((scores[a.id] || 0) > max) { max = scores[a.id]; best = a; }
+  });
+  return best;
+}
+
+function renderStart() {
+  return `
+    <div class="ornament">✦ ✦ ✦</div>
+    <h1>Quão Raro É o Seu<br><span>Arquétipo Masculino?</span></h1>
+    <div class="ornament">✦ ✦ ✦</div>
+    <div class="start-block">
+      <p>Responda 10 perguntas e descubra qual dos 12 arquétipos masculinos habita em você — da raridade de 42% à lenda de apenas 0.3%.</p>
+      <button class="btn-start" onclick="startQuiz()">✦ Iniciar Jornada ✦</button>
+    </div>
+    <div class="watermark">IMPULSE · BRAIN TRAINING</div>
+  `;
+}
+
+function renderQuestion() {
+  const q = questions[current];
+  const letters = ['A','B','C','D'];
+  const progress = Math.round((current / questions.length) * 100);
+  const sel = answers.find(a => a.q === current);
+  return `
+    <div class="ornament">✦ ✦ ✦</div>
+    <h1>Arquétipo <span>Masculino</span></h1>
+    <div class="ornament">✦ ✦ ✦</div>
+    <div class="progress-container">
+      <div class="progress-label"><span>Questão ${current+1} de ${questions.length}</span><span>${progress}%</span></div>
+      <div class="progress-track"><div class="progress-fill" style="width:${progress}%"></div></div>
+    </div>
+    <div class="question-block">
+      <div class="question-number">Pergunta ${current+1}</div>
+      <div class="question-text">${q.text}</div>
+      <div class="options">
+        ${q.options.map((opt, i) => `
+          <button class="option-btn ${sel && sel.opt === i ? 'selected' : ''}" onclick="selectOption(${i})">
+            <span class="option-letter">${letters[i]}</span>
+            <span class="option-text">${opt.text}</span>
+          </button>
+        `).join('')}
+      </div>
+      <div class="nav-row">
+        <button class="btn btn-back" onclick="goBack()" ${current === 0 ? 'style="visibility:hidden"' : ''}>← Voltar</button>
+        <button class="btn btn-next" onclick="goNext()" ${!sel ? 'disabled' : ''} id="nextBtn">
+          ${current === questions.length - 1 ? '✦ Revelar Arquétipo' : 'Próximo →'}
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+function renderResult() {
+  const r = getResult();
+  const traits = r.traits.map(t => `<span class="trait-tag" style="background:${r.rarityBg};color:${r.color};border:1px solid ${r.color}30">${t}</span>`).join('');
+  return `
+    <div class="ornament">✦ ✦ ✦</div>
+    <h1>Seu <span>Arquétipo</span></h1>
+    <div class="ornament">✦ ✦ ✦</div>
+    <div class="result-block">
+      <span class="result-rarity" style="background:${r.rarityBg};color:${r.color}">${r.rarity}</span>
+      <div class="result-icon">${r.icon}</div>
+      <div class="result-name" style="color:${r.color}">${r.name}</div>
+      <div class="result-keyword" style="color:${r.color}">${r.keyword}</div>
+      <div class="result-divider"></div>
+      <p class="result-desc">${r.desc}</p>
+      <div class="result-traits">${traits}</div>
+      <div class="result-percentage">Apenas ${r.percentage} dos homens pertencem a este arquétipo</div>
+      <button class="btn-restart" onclick="restartQuiz()">↺ Refazer o Questionário</button>
+    </div>
+    <div class="watermark" style="margin-top:24px">IMPULSE · BRAIN TRAINING</div>
+  `;
+}
+
+function render() {
+  const app = document.getElementById('app');
+  if (phase === 'start') app.innerHTML = renderStart();
+  else if (phase === 'quiz') app.innerHTML = renderQuestion();
+  else app.innerHTML = renderResult();
+}
+
+function startQuiz() { phase = 'quiz'; current = 0; answers = []; render(); }
+
+function selectOption(i) {
+  answers = answers.filter(a => a.q !== current);
+  answers.push({ q: current, opt: i });
+  render();
+}
+
+function goNext() {
+  const sel = answers.find(a => a.q === current);
+  if (!sel) return;
+  if (current === questions.length - 1) { phase = 'result'; render(); return; }
+  current++;
+  render();
+}
+
+function goBack() {
+  if (current === 0) return;
+  current--;
+  render();
+}
+
+function restartQuiz() { phase = 'start'; current = 0; answers = []; render(); }
+
+render();
+</script>
+</body>
+</html>
